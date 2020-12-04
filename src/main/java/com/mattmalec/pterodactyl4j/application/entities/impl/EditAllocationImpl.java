@@ -5,7 +5,6 @@ import com.mattmalec.pterodactyl4j.application.entities.Allocation;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.abstracts.AbstractAllocationAction;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.requests.Route.CompiledRoute;
 import org.json.JSONObject;
