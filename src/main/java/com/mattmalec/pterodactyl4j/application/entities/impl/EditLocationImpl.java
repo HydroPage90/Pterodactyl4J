@@ -4,7 +4,6 @@ import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.managers.LocationAction;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 

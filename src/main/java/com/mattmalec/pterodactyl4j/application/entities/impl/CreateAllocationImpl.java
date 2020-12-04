@@ -4,7 +4,6 @@ import com.mattmalec.pterodactyl4j.PteroActionImpl;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
 import com.mattmalec.pterodactyl4j.application.managers.abstracts.AbstractAllocationAction;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
-import com.mattmalec.pterodactyl4j.entities.PteroAction;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import com.mattmalec.pterodactyl4j.requests.Route.CompiledRoute;
 import com.mattmalec.pterodactyl4j.utils.Checks;
