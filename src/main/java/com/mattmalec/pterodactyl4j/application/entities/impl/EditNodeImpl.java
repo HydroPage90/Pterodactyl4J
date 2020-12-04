@@ -1,124 +1,19 @@
 package com.mattmalec.pterodactyl4j.application.entities.impl;
 
 import com.mattmalec.pterodactyl4j.PteroActionImpl;
-import com.mattmalec.pterodactyl4j.application.entities.Location;
 import com.mattmalec.pterodactyl4j.application.entities.Node;
-import com.mattmalec.pterodactyl4j.application.managers.NodeAction;
+import com.mattmalec.pterodactyl4j.application.managers.abstracts.AbstractNodeAction;
 import com.mattmalec.pterodactyl4j.entities.PteroAction;
-import com.mattmalec.pterodactyl4j.requests.Requester;
 import com.mattmalec.pterodactyl4j.requests.Route;
 import org.json.JSONObject;
 
-public class EditNodeImpl implements NodeAction {
+public class EditNodeImpl extends AbstractNodeAction {
 
-	private final Requester requester;
 	private final Node node;
 
-	private String name;
-	private Location location;
-	private Boolean isPublic;
-	private String fqdn;
-	private Boolean isBehindProxy;
-	private String daemonBase;
-	private String memory;
-	private String memoryOverallocate;
-	private String diskSpace;
-	private String diskSpaceOverallocate;
-	private String daemonSFTPPort;
-	private String daemonListenPort;
-	private Boolean throttle;
-	private Boolean secure;
-
-	private final PteroApplicationImpl impl;
-
 	EditNodeImpl(PteroApplicationImpl impl, Node node) {
-		this.requester = impl.getRequester();
-		this.impl = impl;
+		super(impl);
 		this.node = node;
-	}
-
-	@Override
-	public NodeAction setName(String name) {
-		this.name = name;
-		return this;
-	}
-
-	@Override
-	public NodeAction setLocation(Location location) {
-		this.location = location;
-		return this;
-	}
-
-	@Override
-	public NodeAction setPublic(boolean isPublic) {
-		this.isPublic = isPublic;
-		return this;
-	}
-
-	@Override
-	public NodeAction setFQDN(String fqdn) {
-		this.fqdn = fqdn;
-		return this;
-	}
-
-	@Override
-	public NodeAction setBehindProxy(boolean isBehindProxy) {
-		this.isBehindProxy = isBehindProxy;
-		return this;
-	}
-
-	@Override
-	public NodeAction setDaemonBase(String daemonBase) {
-		this.daemonBase = daemonBase;
-		return this;
-	}
-
-	@Override
-	public NodeAction setMemory(String memory) {
-		this.memory = memory;
-		return this;
-	}
-
-	@Override
-	public NodeAction setMemoryOverallocate(String memoryOverallocate) {
-		this.memoryOverallocate = memoryOverallocate;
-		return this;
-	}
-
-	@Override
-	public NodeAction setDiskSpace(String diskSpace) {
-		this.diskSpace = diskSpace;
-		return this;
-	}
-
-	@Override
-	public NodeAction setDiskSpaceOverallocate(String diskSpaceOverallocate) {
-		this.diskSpaceOverallocate = diskSpaceOverallocate;
-		return this;
-	}
-
-	@Override
-	public NodeAction setDaemonSFTPPort(String port) {
-		this.daemonSFTPPort = port;
-		return this;
-	}
-
-	@Override
-	public NodeAction setDaemonListenPort(String port) {
-		this.daemonListenPort = port;
-		return this;
-	}
-
-	@Override
-	public NodeAction setThrottle(boolean throttle) {
-		this.throttle = throttle;
-		return this;
-	}
-
-	@Override
-	public NodeAction setScheme(boolean secure) {
-		this.secure = secure;
-		return this;
 	}
 
 	@Override
