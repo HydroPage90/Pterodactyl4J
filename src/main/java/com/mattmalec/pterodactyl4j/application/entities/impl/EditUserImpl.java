@@ -9,14 +9,14 @@ import org.json.JSONObject;
 
 public class EditUserImpl implements UserAction {
 
-    private PteroApplicationImpl impl;
+    private final PteroApplicationImpl impl;
 
     private String userName;
     private String email;
     private String firstName;
     private String lastName;
     private String password;
-    private ApplicationUser user;
+    private final ApplicationUser user;
 
     public EditUserImpl(ApplicationUser user, PteroApplicationImpl impl) {
         this.user = user;

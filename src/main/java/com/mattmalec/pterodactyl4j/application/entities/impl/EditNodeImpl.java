@@ -11,8 +11,8 @@ import org.json.JSONObject;
 
 public class EditNodeImpl implements NodeAction {
 
-	private Requester requester;
-	private Node node;
+	private final Requester requester;
+	private final Node node;
 
 	private String name;
 	private Location location;
@@ -29,7 +29,7 @@ public class EditNodeImpl implements NodeAction {
 	private Boolean throttle;
 	private Boolean secure;
 
-	private PteroApplicationImpl impl;
+	private final PteroApplicationImpl impl;
 
 	EditNodeImpl(PteroApplicationImpl impl, Node node) {
 		this.requester = impl.getRequester();
@@ -124,16 +124,16 @@ public class EditNodeImpl implements NodeAction {
 	@Override
 	public PteroAction<Node> build() {
 		return PteroActionImpl.onExecute(() -> {
-				JSONObject json = new JSONObject();
-				if(name == null)
-					json.put("name", node.getName());
-				else
-					json.put("name", name);
-				if(location == null)
-					json.put("location_id", node.getLocation().retrieve().execute().getId());
-				else
-					json.put("location_id", location.getId());
-				if(isPublic == null)
+			JSONObject json = new JSONObject();
+			if (name == null)
+				json.put("name", node.getName());
+			else
+				json.put("name", name);
+			if (location == null)
+				json.put("location_id", node.getLocation().retrieve().execute().getId());
+			else
+				json.put("location_id", location.getId());
+			if (isPublic == null)
 					json.put("public", node.isPublic() ? "1" : "0");
 				else
 					json.put("public", isPublic ? "1" : "0");
@@ -177,13 +177,13 @@ public class EditNodeImpl implements NodeAction {
 					json.put("daemon_sftp", node.getDaemonSFTPPort());
 				else
 					json.put("daemon_sftp", daemonSFTPPort);
-				if(throttle == null)
-					json.put("throttle", new JSONObject().put("enabled", false));
-				else
-					json.put("throttle", new JSONObject().put("enabled", throttle));
-				Route.CompiledRoute route = Route.Nodes.EDIT_NODE.compile(node.getId()).withJSONdata(json);
-				JSONObject jsonObject = requester.request(route).toJSONObject();
-				return new NodeImpl(jsonObject, impl);
+			if (throttle == null)
+				json.put("throttle", new JSONObject().put("enabled", false));
+			else
+				json.put("throttle", new JSONObject().put("enabled", throttle));
+			Route.CompiledRoute route = Route.Nodes.EDIT_NODE.compile(node.getId()).withJSONdata(json);
+			JSONObject jsonObject = requester.request(route).toJSONObject();
+			return new NodeImpl(jsonObject, impl);
 		});
 	}
 }

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class PteroClientImpl implements PteroClient {
 
-    private Requester requester;
+    private final Requester requester;
 
     public PteroClientImpl(Requester requester) {
         this.requester = requester;
@@ -30,11 +30,11 @@ public class PteroClientImpl implements PteroClient {
     @Override
     public PteroAction<Account> retrieveAccount() {
         PteroClientImpl impl = this;
-        return PteroActionImpl.onExecute(() -> 
+        return PteroActionImpl.onExecute(() ->
         {
-                Route.CompiledRoute route = Route.Accounts.GET_ACCOUNT.compile();
-                JSONObject json = requester.request(route).toJSONObject();
-                return new AccountImpl(json, impl);
+            Route.CompiledRoute route = Route.Accounts.GET_ACCOUNT.compile();
+            JSONObject json = requester.request(route).toJSONObject();
+            return new AccountImpl(json, impl);
         });
     }
 
@@ -42,10 +42,10 @@ public class PteroClientImpl implements PteroClient {
     public PteroAction<Void> setPower(ClientServer server, PowerAction powerAction) {
         return PteroActionImpl.onExecute(() ->
         {
-                JSONObject obj = new JSONObject().put("signal", powerAction.name().toLowerCase());
-                Route.CompiledRoute route = Route.Client.SET_POWER.compile(server.getIdentifier()).withJSONdata(obj);
-                requester.request(route);
-                return null;
+            JSONObject obj = new JSONObject().put("signal", powerAction.name().toLowerCase());
+            Route.CompiledRoute route = Route.Client.SET_POWER.compile(server.getIdentifier()).withJSONdata(obj);
+            requester.request(route);
+            return null;
         });
     }
 
@@ -53,10 +53,10 @@ public class PteroClientImpl implements PteroClient {
     public PteroAction<Void> sendCommand(ClientServer server, String command) {
         return PteroActionImpl.onExecute(() ->
         {
-                JSONObject obj = new JSONObject().put("command", command);
-                Route.CompiledRoute route = Route.Client.SEND_COMMAND.compile(server.getIdentifier()).withJSONdata(obj);
-                requester.request(route);
-                return null;
+            JSONObject obj = new JSONObject().put("command", command);
+            Route.CompiledRoute route = Route.Client.SEND_COMMAND.compile(server.getIdentifier()).withJSONdata(obj);
+            requester.request(route);
+            return null;
         });
     }
 
@@ -64,9 +64,9 @@ public class PteroClientImpl implements PteroClient {
     public PteroAction<Utilization> retrieveUtilization(ClientServer server) {
         return PteroActionImpl.onExecute(() ->
         {
-                Route.CompiledRoute route = Route.Client.GET_UTILIZATION.compile(server.getIdentifier());
-                JSONObject json = requester.request(route).toJSONObject();
-                return new UtilizationImpl(json);
+            Route.CompiledRoute route = Route.Client.GET_UTILIZATION.compile(server.getIdentifier());
+            JSONObject json = requester.request(route).toJSONObject();
+            return new UtilizationImpl(json);
         });
     }
 
@@ -75,23 +75,23 @@ public class PteroClientImpl implements PteroClient {
         PteroClientImpl impl = this;
         return PteroActionImpl.onExecute(() ->
         {
-                Route.CompiledRoute route = Route.Client.LIST_SERVERS.compile("1");
-                JSONObject json = requester.request(route).toJSONObject();
-                long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
-                List<ClientServer> servers = new ArrayList<>();
-                for (Object o : json.getJSONArray("data")) {
+            Route.CompiledRoute route = Route.Client.LIST_SERVERS.compile("1");
+            JSONObject json = requester.request(route).toJSONObject();
+            long pages = json.getJSONObject("meta").getJSONObject("pagination").getLong("total_pages");
+            List<ClientServer> servers = new ArrayList<>();
+            for (Object o : json.getJSONArray("data")) {
+                JSONObject server = new JSONObject(o.toString());
+                servers.add(new ClientServerImpl(server, impl));
+            }
+            for (int i = 1; i < pages; i++) {
+                Route.CompiledRoute nextRoute = Route.Client.LIST_SERVERS.compile(Long.toUnsignedString(pages));
+                JSONObject nextJson = requester.request(nextRoute).toJSONObject();
+                for (Object o : nextJson.getJSONArray("data")) {
                     JSONObject server = new JSONObject(o.toString());
                     servers.add(new ClientServerImpl(server, impl));
                 }
-                for (int i = 1; i < pages; i++) {
-                    Route.CompiledRoute nextRoute = Route.Client.LIST_SERVERS.compile(Long.toUnsignedString(pages));
-                    JSONObject nextJson = requester.request(nextRoute).toJSONObject();
-                    for (Object o : nextJson.getJSONArray("data")) {
-                        JSONObject server = new JSONObject(o.toString());
-                        servers.add(new ClientServerImpl(server, impl));
-                    }
-                }
-                return Collections.unmodifiableList(servers);
+            }
+            return Collections.unmodifiableList(servers);
         });
     }
 
@@ -100,7 +100,7 @@ public class PteroClientImpl implements PteroClient {
         PteroClientImpl impl = this;
         return PteroActionImpl.onExecute(() -> {
             Route.CompiledRoute route = Route.Client.GET_SERVER.compile(identifier);
-            
+
             JSONObject json = requester.request(route).toJSONObject();
             return new ClientServerImpl(json, impl);
         });

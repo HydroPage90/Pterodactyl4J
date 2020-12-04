@@ -10,12 +10,12 @@ Creating the PteroApplication or PteroClient Object is done via the PteroBuilder
 
 **Application Example**:
 ```java
-PteroApplication api = PteroBuilder.createApplication("https://pterodactyl.app", "abc123");
+PteroApplication api = PteroBuilder.application("https://pterodactyl.app", "abc123").build();
 ```
 
 **Client Example**:
 ```java
-PteroClient api = PteroBuilder.createClient("https://pterodactyl.app", "xyz321");
+PteroClient api = PteroBuilder.client("https://pterodactyl.app", "xyz123").build();
 ```
 
 ### Examples:
@@ -26,10 +26,8 @@ public class UserReader
 {
     public static void main(String[] args)
     {
-    
-      PteroApplication api = PteroBuilder.createApplication("https://pterodactyl.app", "abc123");
-      api.retrieveUsers().executeAsync(users -> users.forEach(u -> System.out.println(u.getFullName())));
-      
+        PteroApplication api = PteroBuilder.application("https://pterodactyl.app", "abc123").build();
+        api.retrieveUsers().executeAsync(users -> users.forEach(u -> System.out.println(u.getFullName())));
     }
 }
 ```
@@ -39,6 +37,7 @@ public class ServerCreator
 {
     public static void main(String[] args)
     { 
+        PteroApplication api = PteroBuilder.application("https://pterodactyl.app", "xyz123").build();
 
         Nest nest = api.retrieveNestById("8").execute();
         Location location = api.retrieveLocationById("1").execute();
@@ -54,23 +53,25 @@ public class ServerCreator
         map.put("VERSION", "1.8.8");
         map.put("TYPE", "vanilla");
 
-        ServerAction action = api.createServer().setName("My Server")
-        		.setDescription("Super awesome wrapper")
-        		.setOwner(api.retrieveUserById("1").execute())
-        		.setEgg(egg)
-        		.setLocations(Collections.singleton(location))
-        		.setAllocations(0L)
-        		.setDatabases(0L)
-        		.setCPU(0L)
-        		.setDisk(3L, DataType.GB)
-        		.setMemory(1L, DataType.GB)
-        		.setDockerImage("quay.io/pterodactyl/core:java")
-        		.setDedicatedIP(false)
-        		.setPortRange(portRange)
-        		.startOnCompletion(false)
-        		.setEnvironment(map).build();
-        ApplicationServer server = action.execute();
+        ServerAction action = api.createServer()
+                                 .setName("My Server")
+        		         .setDescription("Super awesome wrapper")
+        		         .setOwner(api.retrieveUserById("1").execute())
+        		         .setEgg(egg)
+        		         .setLocations(Collections.singleton(location))
+        		         .setAllocations(0L)
+        		         .setDatabases(0L)
+        		         .setCPU(0L)
+        		         .setDisk(3L, DataType.GB)
+        		         .setMemory(1L, DataType.GB)
+        		         .setDockerImage("quay.io/pterodactyl/core:java")
+        		         .setDedicatedIP(false)
+        		         .setPortRange(portRange)
+        		         .startOnCompletion(false)
+        		         .setEnvironment(map)
+                                 .build();
 
+        ApplicationServer server = action.execute();
     }
 }
 ```
@@ -80,62 +81,52 @@ public class MyApp extends ClientSocketListenerAdapter
 {
     public static void main(String[] args)
     {
+        PteroClient api = PteroBuilder.client("https://pterodactyl.app", "abc123").build();
 
-        PteroClient api = PteroBuilder.createClient("https://pterodactyl.app", "xyz321");
-        // if there isn't another thread running, this won't execute. you'll need to grab the server synchronously
-        api.retrieveServerByIdentifier("39f09a87").executeAsync(server -> server.getWebSocketBuilder().addEventListeners(new MyApp()).build());
-    
+        // If there isn't another thread running, this won't execute. you'll need to grab the server synchronously
+        api.retrieveServerByIdentifier("39f09a87")
+           .executeAsync(server -> server.getWebSocketBuilder().addEventListeners(new MyApp()).build());
     }
 
     @Override
     public void onAuthSuccess(AuthSuccessEvent event)
     {
-
-        // if the server is running, this will trigger wings to send the entire console history from the current session
+        // If the server is running, this will trigger wings to send the entire console history from the current session
         event.getWebSocketManager().request(WebSocketManager.RequestAction.LOGS);
-    
     }
 
     @Override
     public void onOutput(OutputEvent event)
     {
-
-        // this will output everything from the console
+        // This will output everything from the console
         System.out.println(event.getLine());
-
     }
 
     @Override
     public void onConsoleOutput(ConsoleOutputEvent event)
     {
-
-        // this will output everything from the console related to the game
+        // This will output everything from the console related to the game
         System.out.println(event.getLine());
-
     }
 
     @Override
     public void onInstallOutput(InstallOutputEvent event)
     {
-
-        // this will output everything from the console related to the egg install/docker
+        // This will output everything from the console related to the egg install/docker
         System.out.println(event.getLine());
-    
     }
 
     @Override
     public void onStatsUpdate(StatsUpdateEvent event)
     {
-
         System.out.println(String.format("Memory Usage: %s/%s", event.getMemoryFormatted(DataType.MB), event.getMaxMemoryFormatted(DataType.MB)));
-
     }
 }
 ```
 
 ## Download
 Latest Stable Version: [Bintray Release](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/1.1/link) <br>
-Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_16) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_16/link)
+Latest Version: [ ![Download](https://api.bintray.com/packages/mattmalec/Pterodactyl4J/Pterodactyl4J/images/download.svg?version=2.BETA_15) ](https://bintray.com/mattmalec/Pterodactyl4J/Pterodactyl4J/2.BETA_15/link)
 
 Be sure to replace the **VERSION** key below with the one of the versions shown above!
 

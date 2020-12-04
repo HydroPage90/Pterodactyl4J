@@ -10,13 +10,13 @@ import org.json.JSONObject;
 
 public class EditLocationImpl implements LocationAction {
 
-    private Requester requester;
+    private final Requester requester;
 
     private String shortCode;
     private String description;
-    private PteroApplicationImpl impl;
+    private final PteroApplicationImpl impl;
 
-    private Location location;
+    private final Location location;
 
     public EditLocationImpl(Location location, PteroApplicationImpl impl) {
         this.location = location;
@@ -39,11 +39,11 @@ public class EditLocationImpl implements LocationAction {
     @Override
     public PteroAction<Location> build() {
         JSONObject json = new JSONObject();
-        if(this.shortCode == null)
+        if (this.shortCode == null)
             json.put("shortcode", this.location.getShortCode());
         else
             json.put("shortcode", this.shortCode);
-        if(this.description == null)
+        if (this.description == null)
             json.put("description", this.location.getDescription());
         else
             json.put("description", this.description);

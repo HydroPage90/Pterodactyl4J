@@ -11,8 +11,8 @@ import com.mattmalec.pterodactyl4j.requests.Route;
 
 public class AllocationManagerImpl implements AllocationManager {
 
-	private PteroApplicationImpl impl;
-	private Node node;
+	private final PteroApplicationImpl impl;
+	private final Node node;
 
 	public AllocationManagerImpl(Node node, PteroApplicationImpl impl) {
 		this.impl = impl;
@@ -20,7 +20,7 @@ public class AllocationManagerImpl implements AllocationManager {
 	}
 
 	public AllocationAction createAllocation() {
-		return new CreateAllocationImpl(this.impl, this.node);
+		return new CreateAllocationImpl(this.node, this.impl);
 	}
 
 	public AllocationAction editAllocation(Allocation allocation) {

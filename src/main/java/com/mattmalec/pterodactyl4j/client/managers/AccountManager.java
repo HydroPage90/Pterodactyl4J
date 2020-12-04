@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class AccountManager {
 
-    private PteroClientImpl impl;
+    private final PteroClientImpl impl;
 
     public AccountManager(PteroClientImpl impl) {
         this.impl = impl;

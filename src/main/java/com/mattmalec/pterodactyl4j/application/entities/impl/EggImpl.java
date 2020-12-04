@@ -15,9 +15,9 @@ import java.util.Optional;
 
 public class EggImpl implements Egg {
 
-    private JSONObject json;
-    private JSONObject relationships;
-    private PteroApplicationImpl impl;
+    private final JSONObject json;
+    private final JSONObject relationships;
+    private final PteroApplicationImpl impl;
 
     public EggImpl(JSONObject json, PteroApplicationImpl impl) {
         this.json = json.getJSONObject("attributes");
